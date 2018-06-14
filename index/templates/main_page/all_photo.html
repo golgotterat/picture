@@ -5,6 +5,62 @@
 {% endblock %}
 
 
-{% block main %}
 
+{# <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+  </div>
+</div>
+ #}
+
+
+{% block main %}
+<div class='container'>
+	<div class="row">
+		{% for card in photo_card %}
+			<div class="col-sm">
+					<div class="card" style="width: 18rem;">
+						<a href="{% url 'post_detail' id=card.pk %}"><img class="card-img-top" src="/media/{{card.photo}}" alt="Card image cap"></a>
+						<div class="card-body">
+							<h5 class="card-title">{{card.name}}</h5>
+							{# <p class="card-text">{{card.description}}</p> #}
+							{# <a href="{% url 'post_detail' id=card.pk %}" class="btn btn-primary">Обзор</a> #}
+						</div>
+					</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% if photo_card.paginator.num_pages > 1 %}
+	<div id='pagination'>
+		{% if photo_card.has_previous %}
+			<div id='previous-page'><a href="{% url 'index'  %}?page={{ photo_card.previous_page_number }}">&lt;</a></div>
+		{% endif %}
+		{% if photo_card.has_next %}
+			<div id='next-page'><a href="{% url 'index' %}?page={{ photo_card.next_page_number }}">&gt;</a></div>
+		{% endif %}
+		<div id='num-pages'>
+			{% for pn in photo_card.paginator.page_range %}
+				{% if not forllop.first %}
+					&nbsp;&nbsp;|&nbsp;&nbsp;
+				{% endif %}
+				{% if photo_card.number != pn %}
+					<a href="{% url 'index' %}?page={{ pn }}">
+				{% endif %}
+				{{ pn }}
+				{% if photo_card.number != pn %}
+					</a>
+				{% endif %}
+			{% endfor %}
+		</div>	
+	</div>
+{% endif %}
 {% endblock %}

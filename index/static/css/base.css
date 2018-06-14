@@ -29,3 +29,21 @@ nav.navbar {
 #pagination #next-page {
 	float: right;
 }
+
+
+.row {
+	background-color: #ffffff;
+}
+
+.col-sm {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.col-sm6  {
+	margin-top: 30px;
+}
+
+#photo_ditail {
+	max-height: 500px;
+}

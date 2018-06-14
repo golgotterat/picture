@@ -19,7 +19,8 @@ class Photo(models.Model):
 	date = models.DateTimeField(auto_now=True)	
 	photo_width = models.IntegerField(default=0)
 	photo_height = models.IntegerField(default=0)
-	photo = models.ImageField(width_field = 'photo_width', height_field='photo_height', null=True, blank=True)
+	#photo = StdImageField(size=(640, 480))
+	photo = models.ImageField(width_field ='photo_width', height_field='photo_height', null=True, blank=True)
 
 
 	def __str__(self):

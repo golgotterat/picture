@@ -1,10 +1,12 @@
 {% extends 'main_page/index.html' %}
 
 {% block main %}
+<div class='container'>
 	<div class='col-sm6 col-sm-offset-3'>
 		<form  action='' method="post" enctype="multipart/form-data">{% csrf_token %}
 			{{ form.as_p }}
 			<input type='submit' class='bth bth-default' value='Загрузить'>	
 		</form>
 	</div>
+</div>	
 {% endblock %}

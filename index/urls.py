@@ -9,7 +9,8 @@ from index.views import *
 
 
 urlpatterns = [
-    url(r'^$', views.PhotoListView, name='index'),
+    url(r"^(?:(?P<id>\d+)/)?$", views.PhotoListView, name='index'),
     url(r'^img/(?P<id>\d+)/$', views.post_detail, name='post_detail'),
+    url(r'^img/(?P<id>\d+)/edit$', views.change_size, name='change_size'),
     url(r'^img/uploads/$',views.UploadsPhoto, name='uploads'),
 ]

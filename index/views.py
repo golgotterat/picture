@@ -1,52 +1,68 @@
-from django.shortcuts import render, get_object_or_404 
+from django.shortcuts import render, get_object_or_404,	redirect 
 from index.models import Photo
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect	
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import PostForm
 from django.contrib import messages
+
 # Create your views here.
 
 
 def PhotoListView(request):
+	pag = Paginator(Photo.objects.all().order_by('date'), 1)
 	return render(request,'main_page/all_photo.html', {})
 
+
+
+
+
 # def UploadsPhoto(request, id=None):
-# 	# instance = get_object_or_404(Post, id=id)
-# 	# form = PostForm
-# 	return render(request, 'main_page/uploads.html', {})
+# 	#instance = get_object_or_404(Photo, id=id)
+# 	instance = Photo()
+# 	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
+# 	if form.is_valid():
+# 		instance = form.save(commit=False)
+# 		instance.save()
+# 		messages.success(request, '<a href="#">Item</a> Saved', extra_tags='html_safe')
+# 		return HttpResponseRedirect(request, 'main_page/uploads.html', {})
+	
+# 	context = {
+# 		'form': form,
+# 	}
+
+# 	return render(request, 'main_page/uploads.html', context)
 
 
 
-def SavePhoto(request, id=None):
-	form = PostForm(request.POST or None, request.FILES or None)
-	if form.is_valid(): 
-		instance = form.save(commit=False)
-		instance.save()
-		messages.success(request, "Created")
-		return  HttpResponseRedirect(instance.get_absolute_url())
- 	
-	context = {
-		'form': form,
-	}
+def post_detail(request, id):
+	instance = get_object_or_404(Photo, id=id)
+	img = Photo.objects.get(pk=id)
+	return render(request, 'main_page/post_detail.html', {'img': img})
 
-	return render(request, 'main_page/uploads.html', context)
+
+
+
 
 def UploadsPhoto(request, id=None):
-	#instance = get_object_or_404(Photo, id=id)
-	instance = Photo()
-	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
+	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.save()
-		messages.success(request, '<a href="#">Item</a> Saved', extra_tags='html_safe')
-		return HttpResponseRedirect(request, 'main_page/uploads.html', {})
-	
-	context = {
-		'form': form,
-	}
+		post = form.save(commit=False)
+		post.save()
+		return redirect('post_detail', id=post.pk)
+	else:
+		form = PostForm()
+	return render(request, 'main_page/uploads.html', {'form': form})
 
-	return render(request, 'main_page/uploads.html', context)
+
+
+
+
+
+
+
+
+
 
 # class PhotoListView(ListView):
 # 	template_name = 'main_page/all_photo.html'

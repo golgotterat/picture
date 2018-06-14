@@ -1,0 +1,31 @@
+nav.navbar {
+	background-color: #ffe6e6;
+	box-shadow: 0px 7px 9px 0px #d0d0d0;
+}
+
+
+/*.container {
+	display: flex;
+	flex-direction: row;
+	padding: 20px;
+}*/
+
+.row {
+	background-color: #f1f1f7;
+}
+
+#pagination {
+	margin-top: 20px;
+}
+
+#pagination #previous-page {
+	float: left;
+}
+
+#pagination #num-pages {
+	text-align: center;
+}
+
+#pagination #next-page {
+	float: right;
+}

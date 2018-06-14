@@ -47,3 +47,10 @@ nav.navbar {
 #photo_ditail {
 	max-height: 500px;
 }
+
+.card {
+    box-shadow: -9px 9px 6px rgb(214, 214, 214);
+    border: 1px solid rgba(0, 0, 0, 0.44);
+    margin: 10px 15px 20px 15px;
+}
+

@@ -4,9 +4,9 @@ from .models import Photo
 class PostForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ('name', 'photo', 'photo_width', 'photo_height', 'image_url')
+        fields = ('name', 'photo',  'image_url',)
 
 class ChangeSize(forms.ModelForm):
 	class Meta:
 		model = Photo
-		fields = ('name', 'description')
+		fields = ('photo', 'name', 'photo_width', 'photo_height')

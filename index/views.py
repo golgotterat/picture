@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import PostForm, ChangeSize
 from django.contrib import messages
 from django.core.paginator import Paginator, InvalidPage
+from PIL import Image
+
 
 # Create your views here.
 
@@ -16,7 +18,7 @@ from django.core.paginator import Paginator, InvalidPage
 
 
 
-def PhotoListView(request, id):
+def photo_list_view(request, id):
 	#return render(request,'main_page/all_photo.html', {})
 	try:
 		page_num = request.GET['page']
@@ -35,9 +37,10 @@ def post_detail(request, id):
 	img = Photo.objects.get(pk=id)
 	return render(request, 'main_page/post_detail.html', {'img': img})
 
-def UploadsPhoto(request, id=None):
+def uploads_photo(request, id=None):
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
+		print(request.POST)
 		post = form.save(commit=False)
 		post.save()
 		return redirect('post_detail', id=post.pk)
@@ -46,17 +49,26 @@ def UploadsPhoto(request, id=None):
 	return render(request, 'main_page/uploads.html', {'form': form})
 
 
+
+
 def change_size(request, id):
-    post = get_object_or_404(Photo, pk=id)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'main_page/post_detail.html', {'form': form})
+	post = get_object_or_404(Photo, id=id)
+	if request.method == "POST":
+		print(request.POST)
+		# size = (self.photo_height, self.photo_width)
+		# image = Image.open(request.POST['photo'])
+		# image.show()
+		# image.thumbnail(size)
+		# image.save('2.png')
+		form = ChangeSize(request.POST, instance=post)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.change_size_img()
+			post.save()
+		return redirect('post_detail', id=post.pk)
+	else:
+		form = ChangeSize(instance=post)
+	return render(request, 'main_page/post_change.html', {'form': form})
 
 
 

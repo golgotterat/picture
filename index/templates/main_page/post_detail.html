@@ -4,10 +4,7 @@
 <div class='container' 	>
 	<img id='photo_ditail' src="/media/{{ img.photo }}"></h2>
 	<h1>{{ img.name }}</h1>
-	<h2>{{ img.description }}</h2>
-	<div>{{img.photo_width}}</div>
-	<div>{{img.photo_height}}</div>
-	<a class="btn btn-default" href="{% url 'change_size' id=img.pk %}"><button type="submit" class="save btn btn-default">Edit</button></a>
+	<a class="btn btn-default" href="{% url 'change_size' id=img.pk %}"><button type="submit" class="save btn btn-default">Edit	</button></a>
 </div>	
 
 {% endblock %}

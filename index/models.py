@@ -5,17 +5,12 @@ from django.core.files import File
 import os
 import urllib.request
 from django.core.files.temp import NamedTemporaryFile
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 # Create your models here.
 
-# class Photo(models.Model):
-# 	name = models.CharField(max_length=50)
-# 	description = models.TextField(null=True)
-# 	date = models.DateTimeField(auto_now=True)
-# 	size = models.IntegerField(null=True)
-
-# 	photo_width = models.PositiveSmallIntegerField()
-# 	photo_height = models.PositiveSmallIntegerField()
-# 	photo = models.ImageField(upload_to='photos/%Y/%m/%d', width_field = 'photo_width', height_field='photo_height')
 
 class Photo(models.Model):
 	name = models.CharField(max_length=50)
@@ -23,14 +18,10 @@ class Photo(models.Model):
 	date = models.DateTimeField(auto_now=True)	
 	photo_width = models.IntegerField(default=0)
 	photo_height = models.IntegerField(default=0)
-	photo = models.ImageField(width_field ='photo_width', height_field='photo_height', null=True, blank=True)
-	#image_file = models.ImageField()
+	photo = models.ImageField()
+
 	image_url = models.URLField(null=True, blank=True)
-	#photo = models.ImageField(width_field ='photo_width', height_field='photo_height', null=True, blank=True)
-	# img_temp = NamedTemporaryFile(delete=True)
-	# img_temp.write(urllib.urlopen(url).read())
-	# img_temp.flush()
-	# im.file.save(img_filename, File(img_temp))
+
 
 	def get_remote_image(self):
 		if self.image_url and not self.photo:
@@ -38,13 +29,35 @@ class Photo(models.Model):
 			self.photo.save(os.path.basename(self.image_url), File(open(result[0])))
 			self.save()
 
+
+
+
 	def __str__(self):
 		return self.name
 
 	def get_absolute_url(self):
 		return reverse('index:detail', kwargs={'id': self.id})
 
+	def change_size_img(self):
+		#Opening the uploaded image
+		im = Image.open(self.photo)
+
+		output = BytesIO()
+
+		#Resize/modify the image
+		im = im.resize((self.photo_width, self.photo_height))
+
+		#after modifications, save it to the output
+		im.save(output, format='PNG', quality=100)
+		output.seek(0)
+
+		#change the imagefield value to be the newley modifed image value
+		self.photo = InMemoryUploadedFile(output,'ImageField', "%s.png" %self.photo.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+
 	class Meta:
 		ordering = ['date']
 		verbose_name = 'Изображение'
+
+
 
